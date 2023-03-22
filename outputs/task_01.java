@@ -1,4 +1,4 @@
-class Main {  // block number0
+class Task01 {  // block number0
     public static void main(String[] args) {  // block number1
         int x = 0;
         int expression = 9;
