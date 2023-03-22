@@ -11,7 +11,14 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
     public MyVisitorParser(TokenStreamRewriter rewriter){
         this.rewriter = rewriter;
     }
-    
+    void write(String string) throws Exception {
+        String outputFileName = "outputs/task_01.java";
+        FileOutputStream outputFile = new FileOutputStream(outputFileName);
+        BufferedOutputStream buffer = new BufferedOutputStream(outputFile);
+        byte[] bytes = string.getBytes();
+        buffer.write(bytes);
+        buffer.close();
+    }
 
 
     @Override
