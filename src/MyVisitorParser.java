@@ -11,6 +11,21 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
     public MyVisitorParser(TokenStreamRewriter rewriter){
         this.rewriter = rewriter;
     }
+    
+
+
+    @Override
+    public String visitBlock(JavaParser.BlockContext ctx) {
+        try {
+            rewriter.insertAfter(ctx.getStart(),"  // block number"+count);
+            ++count;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return super.visitBlock(ctx);
+    }
 
     @Override
     public String visitClassBody(JavaParser.ClassBodyContext ctx) {
