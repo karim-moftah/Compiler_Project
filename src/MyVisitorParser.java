@@ -25,7 +25,7 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
     @Override
     public String visitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
 
-        rewriter.insertBefore(ctx.getStart(), "import java.util.*;\n");
+        rewriter.insertBefore(ctx.getStart(), "import java.util.*;\nimport java.io.*;\n");
         return super.visitCompilationUnit(ctx);
 
     }
@@ -78,12 +78,26 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
         if (ctx.getChild(1).getText().equals("main")) {
 
             rewriter.insertBefore(ctx.getStop(),
-                    "\n\t\tblocksVisited = arrayList.toArray(blocksVisited);\n" +
+                    "\n\t\tblocksVisited = arrayList.toArray(blocksVisited);\n\t\tString visitedBlocks = \"\";\n" +
                     "\t\tfor(int blockNums: blocksVisited)\n\t\t{\n" +
                     "\t\t\tif(blockNums != 0)\n"+
-                    "\t\t\t\tSystem.out.println(\"Block #\"+blockNums+\" is visited\");\n" +
-                    "\t\t}\n\t");
+                    "\n\t\t\t\tvisitedBlocks += \"Block #\"+blockNums+\" is visited\\n\";\n" +
+                    "\t\t}\n\twrite(visitedBlocks);\n\t");
         }
+        rewriter.insertAfter(ctx.getStop(),"\n\tpublic static void write(String string)  {\n" +
+                "\t\ttry{\n" +
+                "\n" +
+                "\t\t\tString outputFileName = \"blocksVisited.txt\";\n" +
+                "\t\t\tFileOutputStream outputFile = new FileOutputStream(outputFileName);\n" +
+                "\t\t\tBufferedOutputStream buffer = new BufferedOutputStream(outputFile);\n" +
+                "\t\t\tbyte[] bytes = string.getBytes();\n" +
+                "\t\t\tbuffer.write(bytes);\n" +
+                "\t\t\tbuffer.close();\n" +
+                "\t\t}catch (Exception e) {\n" +
+                "\t\t\te.printStackTrace();\n" +
+                "\t\t}\n" +
+                "\n" +
+                "\t}\n");
         return super.visitMethodDeclaration(ctx);
     }
 }
