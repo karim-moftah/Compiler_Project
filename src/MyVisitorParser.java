@@ -31,29 +31,22 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
 
     }
 
-    @Override
-    public String visitBlock(JavaParser.BlockContext ctx) {
-        try {
-            rewriter.insertAfter(ctx.getStart(),"  // block number"+count);
-            ++count;
+     @Override
+    public String visitClassBody(JavaParser.ClassBodyContext ctx) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        rewriter.insertAfter(ctx.getStart(), "\n\n\tstatic public Integer blocksVisited[] = {};");
+        rewriter.insertAfter(ctx.getStart(), "\n\tstatic public ArrayList<Integer> arrayList = new ArrayList<Integer>(Arrays.asList(blocksVisited));\n");
 
-        return super.visitBlock(ctx);
+        return super.visitClassBody(ctx);
     }
 
     @Override
-    public String visitClassBody(JavaParser.ClassBodyContext ctx) {
-        try {
-            rewriter.insertAfter(ctx.getStart(),"  // block number"+count);
-            ++count;
+    public String visitBlock(JavaParser.BlockContext ctx) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        rewriter.insertAfter(ctx.getStart(), "\t\t// block number " + count + '\n');
+        rewriter.insertAfter(ctx.getStart(), "\t\t\tarrayList.add(" + count + ");");
+        ++count;
 
-        return super.visitClassBody(ctx);
+        return super.visitBlock(ctx);
     }
 }
