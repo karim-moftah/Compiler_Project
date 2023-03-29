@@ -16,7 +16,7 @@ compilationUnit
 ```
 
 By Generating Antler Recognizer we will have a `JavaParserBaseVisitor.java` file
-in which there is two main functions needed to solve this task
+in which there are two main functions needed to solve this task
 
 ```java
 public T visitClassBody(JavaParser.ClassBodyContext ctx) { return visitChildren(ctx); }
@@ -24,7 +24,7 @@ public T visitClassBody(JavaParser.ClassBodyContext ctx) { return visitChildren(
 public T visitBlock(JavaParser.BlockContext ctx) { return visitChildren(ctx); }
 ```
 
-The First we will be modified to capture all classes' blocks and the second will be modified to capture any other block inside the class 
+The First we will be modifying to capture all classes' blocks and the second will be modified to capture any other block inside the class 
 
 ## Procedure
 The file `MyVisitorParser.java` holds all the functionality of capturing occurrences of all kinds of blocks
@@ -53,7 +53,7 @@ The previous function will override the generated `visitBlock` function, and it 
 ## Tests
 > Input:
 ```java
-class Main {
+class Task01 {
     public static void main(String[] args) {
         int x = 0;
         int expression = 9;
@@ -72,16 +72,16 @@ class Main {
 
 > Output
 ```java
-class Main {  // block number0
-    public static void main(String[] args) {  // block number1
+class Task01 {                                  // block number0
+    public static void main(String[] args) {    // block number1
         int x = 0;
         int expression = 9;
-        if( x == true ) {  // block number2
+        if( x == true ) {                       // block number2
 
             if ( x == true)
                 System.out.println("this is not a block");
 
-            if (z  == false){  // block number3
+            if (z  == false){                   // block number3
                 System.out.println("this is a block");
             }
         }

@@ -15,4 +15,6 @@ compilationUnit
 
 ## Tasks
 
-For Task 01 please refer to [Task01 Docs](./Docs/task1.md)
+- For Task 1 please refer to [Task 1 Docs](./Docs/task1.md)
+
+- For Task 2 please refer to [Task 2 Docs](./Docs/task2.md)
