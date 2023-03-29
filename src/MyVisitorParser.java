@@ -49,4 +49,16 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
 
         return super.visitBlock(ctx);
     }
+    public String visitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+        if (ctx.getChild(1).getText().equals("main")) {
+
+            rewriter.insertBefore(ctx.getStop(),
+                    "\n\t\tblocksVisited = arrayList.toArray(blocksVisited);\n" +
+                            "\t\tfor(int blockNums: blocksVisited)\n\t\t{\n" +
+                            "\t\t\tif(blockNums != 0)\n"+
+                            "\t\t\t\tSystem.out.println(\"Block #\"+blockNums+\" is visited\");\n" +
+                            "\t\t}\n\t");
+        }
+        return super.visitMethodDeclaration(ctx);
+    }
 }
