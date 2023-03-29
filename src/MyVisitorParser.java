@@ -1,11 +1,10 @@
 import org.antlr.v4.runtime.*;
-
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 
 public class MyVisitorParser extends JavaParserBaseVisitor<String> {
 
-     TokenStreamRewriter rewriter;
+    TokenStreamRewriter rewriter;
     int count = 1;
 
     public MyVisitorParser(TokenStreamRewriter rewriter) {
@@ -31,7 +30,7 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
 
     }
 
-     @Override
+    @Override
     public String visitClassBody(JavaParser.ClassBodyContext ctx) {
 
         rewriter.insertAfter(ctx.getStart(), "\n\n\tstatic public Integer blocksVisited[] = {};");
@@ -49,15 +48,41 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
 
         return super.visitBlock(ctx);
     }
+
+    @Override
+    public String visitIfbranch(JavaParser.IfbranchContext ctx) {
+        if (!ctx.statement().getStart().getText().equals("{")) {
+
+            rewriter.insertBefore(ctx.statement().getStart(), "{" + "\t\t\t\t\t\t\t\t\t\t// block number " + count + '\n' + "\t\t\tarrayList.add(" + count + ");\n\t\t\t");
+            rewriter.insertAfter(ctx.statement().getStop(), "\n\t\t\t}");
+            ++count;
+
+        }
+        return super.visitIfbranch(ctx);
+    }
+
+    @Override
+    public String visitElseif(JavaParser.ElseifContext ctx) {
+        if (!ctx.getChild(1).getText().toString().startsWith("if(")) {
+            // inside else not if else
+            rewriter.insertBefore(ctx.statement().getStart(), "{" + "\t\t\t\t\t\t\t\t\t\t// block number " + count + '\n' + "\t\t\tarrayList.add(" + count + ");\n\t\t\t");
+            rewriter.insertAfter(ctx.statement().getStop(), "\n\t\t\t}");
+            ++count;
+
+        }
+        return super.visitElseif(ctx);
+    }
+
+    @Override
     public String visitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         if (ctx.getChild(1).getText().equals("main")) {
 
             rewriter.insertBefore(ctx.getStop(),
                     "\n\t\tblocksVisited = arrayList.toArray(blocksVisited);\n" +
-                            "\t\tfor(int blockNums: blocksVisited)\n\t\t{\n" +
-                            "\t\t\tif(blockNums != 0)\n"+
-                            "\t\t\t\tSystem.out.println(\"Block #\"+blockNums+\" is visited\");\n" +
-                            "\t\t}\n\t");
+                    "\t\tfor(int blockNums: blocksVisited)\n\t\t{\n" +
+                    "\t\t\tif(blockNums != 0)\n"+
+                    "\t\t\t\tSystem.out.println(\"Block #\"+blockNums+\" is visited\");\n" +
+                    "\t\t}\n\t");
         }
         return super.visitMethodDeclaration(ctx);
     }
