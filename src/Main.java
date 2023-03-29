@@ -7,12 +7,8 @@ import java.io.FileInputStream;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-        /*--------------- Task 01 ---------------*/
-        String inputFileName = "Inputs/task_01.java";
-        /*--------------- Task 01 ---------------*/
-
+        String inputFileName = "Inputs/input.java";
         FileInputStream inputFile = new FileInputStream(new File(inputFileName));
-
         ANTLRInputStream input = new ANTLRInputStream(inputFile);
 
         JavaLexer lexer = new JavaLexer(input);
