@@ -83,7 +83,7 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
                     "\t\t\tif(blockNums != 0)\n"+
                     "\n\t\t\t\tvisitedBlocks += \"Block #\"+blockNums+\" is visited\\n\";\n" +
                     "\t\t}\n\twrite(visitedBlocks);\n\t");
-        }
+        
         rewriter.insertAfter(ctx.getStop(),"\n\tpublic static void write(String string)  {\n" +
                 "\t\ttry{\n" +
                 "\n" +
@@ -98,6 +98,7 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
                 "\t\t}\n" +
                 "\n" +
                 "\t}\n");
+        }
         return super.visitMethodDeclaration(ctx);
     }
 }
