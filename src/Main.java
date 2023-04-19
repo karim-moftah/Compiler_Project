@@ -34,7 +34,7 @@ public class Main {
         myparser.visit(tree);
         myparser.write(rewriter.getText());
     }
-    
+
     public static void runIntermediateCode() throws Exception {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c","java outputs/output.java");
@@ -63,6 +63,8 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+
     public static void genHTML(CommonTokenStream token, ParseTree tree) throws Exception {
         // generate HTML file
         TokenStreamRewriter HTMLrewriter = new TokenStreamRewriter(token);
@@ -75,4 +77,23 @@ public class Main {
         Desktop.getDesktop().browse(htmlFile.toURI());
     }
 
+    static ArrayList<String> readBlocksFile() {
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            File myObj = new File("outputs/blocks.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+
+                list.add(data);
+
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 }

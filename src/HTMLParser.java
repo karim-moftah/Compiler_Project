@@ -27,7 +27,6 @@ public class HTMLParser extends JavaParserBaseVisitor<String> {
         buffer.write(bytes);
         buffer.close();
     }
-
     @Override
     public String visitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
 
@@ -83,6 +82,9 @@ public class HTMLParser extends JavaParserBaseVisitor<String> {
             rewriter.insertBefore(ctx.getStop(), "</pre>");
             ++count;
 
+
+
+
         return super.visitBlock(ctx);
     }
 
@@ -120,6 +122,8 @@ public class HTMLParser extends JavaParserBaseVisitor<String> {
         return super.visitElseif(ctx);
     }
 
+
+
     @Override
     public String visitSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
         rewriter.insertAfter(ctx.getStop(), "</pre>");
@@ -134,4 +138,6 @@ public class HTMLParser extends JavaParserBaseVisitor<String> {
         ++caseCount;
         return super.visitSwitchLabel(ctx);
     }
+
+
 }

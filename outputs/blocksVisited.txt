@@ -1,0 +1,17 @@
+[11, 1, 12, case1, 2, 3, 4, 15, 5, 7, 9, 10]
+Block #1 is visited
+Block #2 is visited
+Block #3 is visited
+Block #4 is visited
+Block #2 is visited
+Block #2 is visited
+Block #2 is visited
+Block #2 is visited
+Block #5 is visited
+Block #7 is visited
+Block #9 is visited
+Block #10 is visited
+Block #11 is visited
+Block #12 is visited
+Block #15 is visited
+Block #case1 is visited
