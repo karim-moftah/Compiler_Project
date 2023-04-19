@@ -75,5 +75,43 @@ public class MyVisitorParser extends JavaParserBaseVisitor<String> {
         return super.visitElseif(ctx);
     }
 
-    
+    @Override
+    public String visitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+        if (ctx.getChild(1).getText().equals("main")) {
+
+            rewriter.insertBefore(ctx.getStop(),
+                    "\n\t\tblocksVisited = arrayList.toArray(blocksVisited);\n\t\tString visitedBlocks = \"\";\n" +
+                            "\t\tfor(String blockNums: blocksVisited)\n\t\t{\nblocks.add(blockNums);\n" +
+                            "\t\t\t\n"+
+                            "\n\t\t\t\tvisitedBlocks += \"Block #\"+blockNums+\" is visited\\n\";\n" +
+                            "\t\t}\n\tvisitedBlocks = blocks + \"\\n\" + visitedBlocks;\n\twrite(\"outputs/blocksVisited.txt\",visitedBlocks);\n\t\t\tString Ss = \"\";\n" +
+                            "\t\tfor(String elements : blocks) {\n" +
+                            "\t\t\tSs = Ss + elements + \"\\n\";\n" +
+                            "\t\t}\n" +
+                            "\t\twrite(\"outputs/blocks.txt\",Ss);\n\n");
+
+            rewriter.insertAfter(ctx.getStop(),"\n\tpublic static void write(String filename,String string)  {\n" +
+                    "\t\ttry{\n" +
+                    "\t\t\tString outputFileName = filename;\n" +
+                    "\t\t\tFileOutputStream outputFile = new FileOutputStream(outputFileName);\n" +
+                    "\t\t\tBufferedOutputStream buffer = new BufferedOutputStream(outputFile);\n" +
+                    "\t\t\tbyte[] bytes = string.getBytes();\n" +
+                    "\t\t\tbuffer.write(bytes);\n" +
+                    "\t\t\tbuffer.close();\n" +
+                    "\t\t}catch (Exception e) {\n" +
+                    "\t\t\te.printStackTrace();\n" +
+                    "\t\t}\n" +
+                    "\n" +
+                    "\t}\n");
+        }
+        return super.visitMethodDeclaration(ctx);
+    }
+
+
+    @Override public String visitSwitchLabel(JavaParser.SwitchLabelContext ctx) {
+        rewriter.insertAfter(ctx.getStop(), "\n\t\t\t\tarrayList.add(" +'"' + "case" + caseCount + '"' +");");
+        ++caseCount;
+        return super.visitSwitchLabel(ctx);
+    }
+
 }

@@ -63,5 +63,16 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static void genHTML(CommonTokenStream token, ParseTree tree) throws Exception {
+        // generate HTML file
+        TokenStreamRewriter HTMLrewriter = new TokenStreamRewriter(token);
+        HTMLParser myHTMLparser = new HTMLParser(HTMLrewriter,readBlocksFile());
+        myHTMLparser.visit(tree);
+        myHTMLparser.write_html(HTMLrewriter.getText());
+
+        // open the HTML file automatically
+        File htmlFile = new File("outputs/index.html");
+        Desktop.getDesktop().browse(htmlFile.toURI());
+    }
 
 }
